@@ -27,9 +27,10 @@ pipeline {
             }
             steps {
                 echo 'Terraform Apply..'
+                sh 'terraform apply -no-color -input=false myplan'
             }
         }
-        stage('Deploy') {
+        stage('Application Deployment') {
             steps {
                 echo 'Deploying....'
             }
