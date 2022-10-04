@@ -21,8 +21,9 @@ pipeline {
             }
         }
         stage('Terraform Apply') {
-            when { 
+            when {
                 beforeInput true
+                branch 'main'
             }
             input {
                 message "Cowboy would you really like to run **${JOB_NAME}**?"
