@@ -4,7 +4,7 @@ pipeline {
       githubPush()
     }
     options {
-      buildDiscarder(logRotator(daysToKeepStr: "30", numToKeepStr: "100"))
+      buildDiscarder(logRotator(daysToKeepStr: "30", numToKeepStr: "10"))
       ansiColor("xterm")
     }
     parameters{
