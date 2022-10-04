@@ -7,6 +7,25 @@ pipeline {
       buildDiscarder(logRotator(daysToKeepStr: "30", numToKeepStr: "100"))
       ansiColor("xterm")
     }
+    parameters{
+            choice(
+                choices:['plan','apply','destroy'],
+                name:'Actions',
+                description: 'Describes the Actions')
+            booleanParam(
+                defaultValue: false,
+                description: 'network',
+                name: 'Networking'
+                )
+            booleanParam(
+                defaultValue: false,
+                description: 'compute',
+                name: 'Compute')
+            booleanParam(
+                defaultValue: false,
+                description: 'Notify',
+                name: 'Notification')
+    }
     stages {
         stage('Terraform Init') {
             steps {
