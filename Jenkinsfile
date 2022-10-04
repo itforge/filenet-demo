@@ -2,9 +2,10 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Terraform Plan') {
             steps {
-                echo 'Building..'
+                echo 'Terraform Plan..'
+                sh 'ls'
             }
         }
         stage('Test') {
