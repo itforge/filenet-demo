@@ -4,7 +4,7 @@ pipeline {
       githubPush()
     }
     stages {
-        stage('Terraform InitPlan') {
+        stage('Terraform Init') {
             steps {
                 echo 'Terraform Init..'
                 sh 'terraform init'
@@ -13,7 +13,7 @@ pipeline {
         stage('Terraform Plan') {
             steps {
                 echo 'Terraform Plan..'
-                sh 'ls'
+                sh 'terraform plan'
             }
         }
         stage('Test') {
