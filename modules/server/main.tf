@@ -9,6 +9,11 @@ variable "admin_user" {
     default = "adminuser"
 }
 
+resource "tls_private_key" "ssh" {
+  algorithm = "RSA"
+  rsa_bits  = "4096"
+}
+
 resource "azurerm_network_interface" "nic" {
   count               = var.aantal
   name                = "${var.name}-${count.index}"
@@ -35,7 +40,7 @@ resource "azurerm_linux_virtual_machine" "server" {
 
   admin_ssh_key {
     username   = var.admin_user
-    public_key = file("id_rsa.pub")
+    public_key = tls_private_key.ssh.public_key_openssh
   }
 
   os_disk {
