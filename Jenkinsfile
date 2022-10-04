@@ -21,9 +21,7 @@ pipeline {
             }
         }
         stage('Terraform Apply') {
-            when {
-                beforeInput true
-            }
+            when { beforeInput true }
             input {
                 message "Cowboy would you really like to run **${JOB_NAME}**"
                 ok "Apply ${JOB_NAME}"
