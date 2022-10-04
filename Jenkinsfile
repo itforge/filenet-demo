@@ -12,6 +12,10 @@ pipeline {
                 choices:['plan','apply','destroy'],
                 name:'Actions',
                 description: 'Describes the Actions')
+            choice(
+                choices:['dev','prd'],
+                name:'Omgeving',
+                description: 'Selecteer de omgeving')
             booleanParam(
                 defaultValue: false,
                 description: 'network',
@@ -30,7 +34,7 @@ pipeline {
         stage('Terraform Init') {
             steps {
                 echo 'Terraform Init..'
-                sh 'terraform init -no-color -backend-config="container_name=tfstate-${ENV}" '
+                sh 'terraform init -no-color -backend-config="container_name=tfstate-${params.omgeving}" '
             }
         }
         stage('Terraform Plan') {
