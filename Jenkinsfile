@@ -20,7 +20,7 @@ pipeline {
                 sh 'terraform plan -no-color -out myplan'
             }
         }
-        stage('Test') {
+        stage('Terraform Apply') {
             when {
               beforeInput true
             }
