@@ -11,7 +11,7 @@ pipeline {
         stage('Terraform Init') {
             steps {
                 echo 'Terraform Init..'
-                sh 'terraform init -no-color'
+                sh 'terraform init -no-color -backend-config="key=${ENV}" '
             }
         }
         stage('Terraform Plan') {
