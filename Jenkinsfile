@@ -34,7 +34,7 @@ pipeline {
         stage('Terraform Init') {
             steps {
                 echo 'Terraform Init..'
-                sh """terraform init -no-color -backend-config="container_name=tfstate-${params.omgeving}""""
+                sh "terraform init -no-color -backend-config=container_name=tfstate-${params.omgeving}"
             }
         }
         stage('Terraform Plan') {
