@@ -14,7 +14,7 @@ pipeline {
                 description: 'Describes the Actions')
             choice(
                 choices:['dev','prd'],
-                name:'Omgeving',
+                name:'omgeving',
                 description: 'Selecteer de omgeving')
             booleanParam(
                 defaultValue: false,
