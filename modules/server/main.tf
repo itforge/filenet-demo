@@ -60,7 +60,8 @@ resource "azurerm_linux_virtual_machine" "server" {
 }
 
 resource "ansible_host" "server" {
-  inventory_hostname = azurerm_linux_virtual_machine.server.public_ip_address
+  count              = var.aantal
+  inventory_hostname = azurerm_linux_virtual_machine.server[count.index].public_ip_address
   groups             = ["filenet"]
 
   vars = {
