@@ -40,6 +40,9 @@ resource "azurerm_linux_virtual_machine" "server" {
   network_interface_ids = [
     azurerm_network_interface.nic[count.index].id,
   ]
+  tags = {
+    applicationrole = "${var.name}"
+  }
 
   admin_ssh_key {
     username   = var.admin_user
@@ -58,9 +61,6 @@ resource "azurerm_linux_virtual_machine" "server" {
     version   = "latest"
   }
 
-  tags = {
-    applicationrole = var.name
-  }
 }
 
 # resource "ansible_host" "server" {
