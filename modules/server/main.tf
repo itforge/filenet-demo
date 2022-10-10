@@ -59,12 +59,12 @@ resource "azurerm_linux_virtual_machine" "server" {
   }
 }
 
-resource "ansible_host" "server" {
-  count              = var.aantal
-  inventory_hostname = azurerm_linux_virtual_machine.server[count.index].public_ip_address
-  groups             = ["filenet"]
+# resource "ansible_host" "server" {
+#   count              = var.aantal
+#   inventory_hostname = azurerm_linux_virtual_machine.server[count.index].public_ip_address
+#   groups             = ["filenet"]
 
-  vars = {
-    ansible_user       = var.admin_user
-  }
-}
+#   vars = {
+#     ansible_user       = var.admin_user
+#   }
+# }
