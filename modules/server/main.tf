@@ -58,7 +58,7 @@ resource "azurerm_linux_virtual_machine" "server" {
     version   = "latest"
   }
 
-  tags {
+  tags = {
     applicationrole = var.name
   }
 }
