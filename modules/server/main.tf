@@ -57,6 +57,10 @@ resource "azurerm_linux_virtual_machine" "server" {
     sku       = var.sku
     version   = "latest"
   }
+
+  tags {
+    applicationrole = var.name
+  }
 }
 
 # resource "ansible_host" "server" {
