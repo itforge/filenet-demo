@@ -5,6 +5,10 @@ terraform {
       source  = "hashicorp/azurerm"
       version = ">=3.23.0"
     }
+    ansible = {
+      source = "nbering/ansible"
+      version = "1.0.4"
+    }
   }
   backend "azurerm" {
     resource_group_name  = "rg-prod"
