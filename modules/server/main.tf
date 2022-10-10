@@ -58,3 +58,12 @@ resource "azurerm_linux_virtual_machine" "server" {
     version   = "latest"
   }
 }
+
+resource "ansible_host" "server" {
+  inventory_hostname = azurerm_linux_virtual_machine.server.public_ip_address
+  groups             = ["filenet"]
+
+  vars = {
+    ansible_user       = var.admin_user
+  }
+}
