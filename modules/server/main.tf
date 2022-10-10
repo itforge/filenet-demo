@@ -4,6 +4,9 @@ variable "resource_group_name" {}
 variable "subnet" {}
 variable "size" {}
 variable "aantal" {}
+variable "publisher" {}
+variable "offer" {}
+variable "sku" {}
 variable "admin_user" {
     type = string
     default = "adminuser"
@@ -49,9 +52,9 @@ resource "azurerm_linux_virtual_machine" "server" {
   }
 
   source_image_reference {
-    publisher = "RedHat"
-    offer     = "rhel-raw"
-    sku       = "8_6"
+    publisher = var.publisher
+    offer     = var.offer
+    sku       = var.sku
     version   = "latest"
   }
 }

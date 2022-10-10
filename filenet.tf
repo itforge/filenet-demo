@@ -36,6 +36,10 @@ module "server" {
   location             = var.region
   subnet               = module.compartiment[each.value.compartiment].subnet_id
   size                 = each.value.size
+  publisher            = each.value.publisher
+  offer                = each.value.offer
+  sku                  = each.value.sku
+  
   depends_on = [
     module.compartiment
   ]

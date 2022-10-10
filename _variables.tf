@@ -28,6 +28,9 @@ variable "servers" {
     name = string
     size = string
     compartiment = string
+    publisher = string
+    offer = string
+    sku = string
   }))
 }
 
