@@ -18,7 +18,7 @@ resource "azurerm_dns_a_record" "dns" {
   zone_name           = "sscict.vforge.net"
   resource_group_name = var.resource_group_name
   ttl                 = 300
-  records             = [azurerm_linux_virtual_machine.server[count.index].public_ip_address]
+  target_resource_id  = azurerm_public_ip.public_ip[count.index].id
 }
 
 resource "azurerm_public_ip" "public_ip" {
