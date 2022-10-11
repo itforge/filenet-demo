@@ -31,6 +31,16 @@ pipeline {
                 name: 'Notification')
     }
     stages {
+        stage('Tools Init') {
+            steps {
+                script {
+                    echo "PATH = ${PATH}"
+                    echo "M2_HOME = ${M2_HOME}"
+                def tfHome = tool name: 'Ansible'
+                env.PATH = "${tfHome}:${env.PATH}"
+                 sh 'ansible --version'
+                }
+        }
         stage('Terraform Init') {
             steps {
                 echo 'Terraform Init..'
