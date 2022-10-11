@@ -12,6 +12,23 @@ variable "admin_user" {
     default = "adminuser"
 }
 
+resource "azurerm_dns_a_record" "dns" {
+  count               = var.aantal
+  name                = "${var.name}-${count.index}"
+  zone_name           = "sscict.vforge.net"
+  resource_group_name = var.resource_group_name
+  ttl                 = 300
+  records             = [azurerm_linux_virtual_machine.server[count.index].public_ip_address]
+}
+
+resource "azurerm_public_ip" "public_ip" {
+  count               = var.aantal
+  name                = "${var.name}-${count.index}"
+  resource_group_name = var.resource_group_name
+  location            = var.location
+  allocation_method   = "Dynamic"
+}
+
 resource "azurerm_network_interface" "nic" {
   count               = var.aantal
   name                = "${var.name}-${count.index}"
@@ -22,6 +39,7 @@ resource "azurerm_network_interface" "nic" {
     name                          = "internal"
     subnet_id                     = var.subnet
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.public_ip[count.index].id
   }
 }
 
