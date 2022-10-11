@@ -40,7 +40,8 @@ pipeline {
                 env.PATH = "${tfHome}:${env.PATH}"
                  sh 'ansible --version'
                 }
-        }
+            }
+        }    
         stage('Terraform Init') {
             steps {
                 echo 'Terraform Init..'
