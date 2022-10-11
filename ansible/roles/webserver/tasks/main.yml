@@ -15,10 +15,12 @@
   ansible.posix.firewalld:
     service: https
     permanent: yes
+    immediate: yes
     state: enabled
 
 - name: permit traffic in default zone for http service
   ansible.posix.firewalld:
     service: http
     permanent: yes
+    immediate: yes
     state: enabled
