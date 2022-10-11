@@ -64,9 +64,8 @@ pipeline {
         }
         stage('Application Deployment') {
             steps {
-                script {
-                    echo 'Deploying....'
-                    sh 'cd ansible'
+                echo 'Deploying....'
+                dir("ansible") {
                     sh 'ansible all -m ping -i ./ansible_azure_rm.yml'
                     sh 'ansible-playbook -i ./ansible_azure_rm.yml ./webserver.yml'
                 }
