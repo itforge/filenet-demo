@@ -7,29 +7,6 @@ pipeline {
       buildDiscarder(logRotator(daysToKeepStr: "30", numToKeepStr: "10"))
       ansiColor("xterm")
     }
-    parameters{
-            choice(
-                choices:['plan','apply','destroy'],
-                name:'Actions',
-                description: 'Describes the Actions')
-            choice(
-                choices:['dev','prd'],
-                name:'omgeving',
-                description: 'Selecteer de omgeving')
-            booleanParam(
-                defaultValue: false,
-                description: 'network',
-                name: 'Networking'
-                )
-            booleanParam(
-                defaultValue: false,
-                description: 'compute',
-                name: 'Compute')
-            booleanParam(
-                defaultValue: false,
-                description: 'Notify',
-                name: 'Notification')
-    }
     stages {
         stage('Tools Init') {
             steps {
@@ -43,7 +20,7 @@ pipeline {
         stage('Terraform Init') {
             steps {
                 echo 'Terraform Init..'
-                sh "terraform init -no-color -backend-config=container_name=tfstate-${params.omgeving}"
+                sh "terraform init -no-color -backend-config=container_name=tfstate-${ENVIRONMENT}"
             }
         }
         stage('Terraform Plan') {
