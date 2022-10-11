@@ -1,0 +1,23 @@
+---
+- name: bastion
+  hosts: bastion
+  become: yes
+  become_method: sudo
+  gather_facts: true
+  vars:
+    aws_region: "{{ gv_all__aws_region }}"
+  pre_tasks:
+    - name:  Wait for system to become reachable...
+      wait_for_connection:
+        timeout: 30
+  roles:
+    - role: base
+    - role: nvme_mapping
+    - role: ssh_auth_key
+    - role: bastion
+    - role: aws_inspector
+
+  post_tasks:
+    - name: Flag system as provisioned by ansible
+      shell: echo "$(date --iso-8601=seconds)" > /etc/last_ansible_run
+      when: not ansible_check_mode

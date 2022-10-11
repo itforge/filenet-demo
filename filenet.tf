@@ -21,6 +21,7 @@ module "compartiment" {
   name                 = each.value.name
   virtual_network_name = module.omgeving.vnet_name
   resource_group_name  = module.omgeving.rg_name
+  location             = var.region
   address_prefixes     = each.value.address_prefixes
   depends_on = [
     module.omgeving

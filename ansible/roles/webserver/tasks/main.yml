@@ -1,0 +1,199 @@
+---
+# tasks file for indexer
+
+- name: register if splunk data directory is already created
+  command: mountpoint -q /data/splunk
+  register: filesystem_stat
+  failed_when: False
+  changed_when: False
+
+- name: configure indexer filesystems
+  block:
+    - name: stop splunk, if running
+      service:
+        name: splunk
+        state: stopped
+
+    - name: create toplevel data directory
+      file:
+        path: /data
+        state: directory
+        mode: 0755
+        owner: root
+        group: root
+
+    - name: create splunk data directory
+      file:
+        path: /data/splunk
+        state: directory
+        mode: 0750
+        owner: splunk
+        group: splunk
+
+    - name: create xfs filesystems for hotwarm and cold
+      filesystem:
+        fstype: xfs
+        dev: "{{ item.device }}"
+        opts: -L "{{ item.label }}"
+      loop:
+        - { device: "{{ fs_hotwarm }}", label: 'hotwarm' }
+        - { device: "{{ fs_cold }}", label: 'cold' }
+
+    - name: register UUIDs of xfs filesystems
+      command: lsblk {{ item }} -n -o UUID
+      register: uuid
+      changed_when: false
+      loop:
+        - "{{ fs_hotwarm }}"
+        - "{{ fs_cold }}"
+
+    - name: populate uuids of filesystems
+      set_fact:
+        #uuids: "{{ uuids|default([]) + [ {'device': item.item, 'uuid': item.stdout} ] }}"
+        uuids: "{{ uuids|default([]) | combine( {item.item | basename : item.stdout} ) }}"
+        cacheable: true
+      loop: "{{ uuid.results }}"
+
+    - name: mount /dev/xvdg device
+      mount:
+        path: /data/splunk
+        src: UUID={{ uuids.xvdg }}
+        fstype: xfs
+        state: mounted
+        opts: defaults,nofail
+        passno: 2
+
+    - name: create splunk data directories
+      file:
+        path: /data/splunk/{{ item }}
+        state: directory
+        mode: 0750
+        owner: splunk
+        group: splunk
+      loop:
+        - hotwarm
+        - thawed
+        - cold
+
+    - name: mount /dev/xvdh device
+      mount:
+        path: /data/splunk/cold
+        src: UUID={{ uuids.xvdh }}
+        fstype: xfs
+        state: mounted
+        opts: defaults,nofail
+        passno: 2
+
+    - name: set permissions on splunk cold data directory
+      file:
+        path: /data/splunk/cold
+        state: directory
+        mode: 0750
+        owner: splunk
+        group: splunk
+
+    - name: start service splunk
+      service:
+        name: splunk
+        state: started
+        enabled: True
+  when: not ansible_check_mode and filesystem_stat.rc != 0
+
+- name: put indexing certificate in place
+  template:
+    src: indexer.pem.j2
+    dest: "{{ splunk_homedir }}/etc/auth/certs/indexer.pem"
+    owner: splunk
+    group: splunk
+    mode: 0600
+  notify: splunk restart
+
+- name: configure listeners in inputs.conf
+  blockinfile:
+    path: "{{ splunk_homedir }}/etc/system/local/inputs.conf"
+    insertafter: "host ="
+    block: |
+      [splunktcp-ssl:9997]
+      #compressed = true
+
+      # port 9998 for mainframe syncsort ironstream only
+      [tcp://9998]
+      connection_host = dns
+      sourcetype = json
+
+      [tcp-ssl:9998]
+      #compressed = false
+
+      [SSL]
+      serverCert = {{ indexercertpath }}
+      sslVersions = tls1.2
+  notify: splunk restart
+
+- name: register if sslpassword is set in inputs.conf
+  command: grep -xq 'sslPassword = \$7\$.*' {{ splunk_homedir }}/etc/system/local/inputs.conf
+  register: sslpasswordininputsconf
+  check_mode: no
+  ignore_errors: yes
+  changed_when: no
+
+- name: set sslpassword in inputs.conf
+  lineinfile:
+    path: "{{ splunk_homedir }}/etc/system/local/inputs.conf"
+    insertafter: '^# END ANSIBLE MANAGED BLOCK$'
+    line: 'sslPassword = {{ indexerprivkeypass }}'
+  notify: splunk restart
+  when: sslpasswordininputsconf.rc == 1
+
+# - name: set site
+#   set_fact:
+#     site: "{{ sites | selectattr('az', 'equalto', az) | map(attribute='site') | join(',') }}"
+
+- name: configure peer node
+  ini_file:
+    path: "{{ splunk_homedir }}/etc/system/local/server.conf"
+    section: "{{ item.section }}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+    create: yes
+    owner: splunk
+    group: splunk
+    mode: 0600
+  notify: splunk restart
+  loop:
+    - { section: "general", option: "site", value: "site{{ site }}" }
+    - { section: "replication_port://9100", option: "disabled", value: "false" }
+    - { section: "clustering", option: "mode", value: "slave" }
+    - { section: "clustering", option: "master_uri", value: "https://{{ master_uri }}:8089" }
+
+
+- name: configure settings in limits.conf
+  ini_file:
+    path: "{{ splunk_homedir }}/etc/system/local/limits.conf"
+    section: "lookup"
+    option: "enable_splunkd_kv_lookup_indexing"
+    value: "true"
+    create: yes
+    owner: splunk
+    group: splunk
+    mode: 0600
+
+- name: register if clustering pass4symmkey is set in server.conf
+  ini_file:
+    path: "{{ splunk_homedir }}/etc/system/local/server.conf"
+    section: clustering
+    option: pass4SymmKey
+    create: no
+    state: absent
+  check_mode: yes
+  changed_when: no
+  register: pass4symmkeyinserverconf
+
+- name: set clustering pass4symmkey in server.conf
+  ini_file:
+    path: "{{ splunk_homedir }}/etc/system/local/server.conf"
+    section: clustering
+    option: pass4SymmKey
+    value: "{{ indexerclustersecret }}"
+    create: no
+  notify: splunk restart
+  when: pass4symmkeyinserverconf.msg == "OK"
