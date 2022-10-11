@@ -5,3 +5,5 @@ auth_source: msi
 plain_host_names: yes
 keyed_groups:
 - key: tags.applicationrole
+hostvar_expressions:
+  ansible_host: (public_ip_name + ".sscict.vforge.net")
