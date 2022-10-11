@@ -13,6 +13,7 @@ pipeline {
                 script {
                     echo "PATH = ${PATH}"
                     env.PATH = "/var/lib/jenkins/.local/bin:${env.PATH}"
+                    sh 'ansible-galaxy install geerlingguy.certbot'
                     sh 'ansible --version'
                 }
             }
