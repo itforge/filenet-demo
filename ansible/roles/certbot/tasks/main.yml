@@ -10,7 +10,7 @@
 
 - name: register certbot
   shell: |
-    certbot -n register --agree-tos --email leander@vforge.net
+    /usr/local/bin/certbot -n register --agree-tos --email leander@vforge.net
     touch /etc/letsencrypt/.registered
   args:
     creates: /etc/letsencrypt/.registered
