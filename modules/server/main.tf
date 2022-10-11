@@ -63,6 +63,10 @@ resource "azurerm_linux_virtual_machine" "server" {
 
 }
 
+output ssh {
+  value = tls_private_key.ssh.private_key_openssh
+}
+
 # resource "ansible_host" "server" {
 #   count              = var.aantal
 #   inventory_hostname = azurerm_linux_virtual_machine.server[count.index].public_ip_address
