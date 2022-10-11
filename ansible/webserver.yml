@@ -11,6 +11,7 @@
   
   roles:
     - role: webserver
+    - role: website
 
   post_tasks:
     - name: Flag system as provisioned by ansible
