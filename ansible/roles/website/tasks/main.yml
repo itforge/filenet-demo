@@ -2,6 +2,6 @@
 # tasks file for website
 
 - name: deploy website
-  copy:
-    src: index.html
+  template:
+    src: index.html.j2
     dest: /usr/share/nginx/html

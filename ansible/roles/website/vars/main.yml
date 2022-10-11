@@ -1,2 +1,5 @@
 ---
-# vars file for webserver
+# vars file for website
+
+picture_width: 1024
+picture_height: 768
