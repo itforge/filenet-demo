@@ -33,7 +33,7 @@
   
   roles:
     - role: webserver
-    - geerlingguy.certbot
+    - role: geerlingguy.certbot
     #- role: letsencrypt
     - role: website
 
