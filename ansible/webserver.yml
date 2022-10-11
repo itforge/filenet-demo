@@ -4,7 +4,6 @@
   become: yes
   become_method: sudo
   gather_facts: true
-  domain_name: "sscict.vforge.net"
   
   vars:
     picture_width: 500
@@ -19,6 +18,7 @@
     acme_directory: https://acme-v02.api.letsencrypt.org/directory
     acme_version: 2
     acme_email: leander@vforge.net
+    domain_name: sscict.vforge.net
 
   pre_tasks:
     - name:  Wait for system to become reachable...
