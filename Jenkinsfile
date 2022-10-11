@@ -64,8 +64,12 @@ pipeline {
         }
         stage('Application Deployment') {
             steps {
-                echo 'Deploying....'
-                sh 'ansible all -m ping -i ./ansible_azure_rm.yml'
+                script {
+                    echo 'Deploying....'
+                    sh 'ansible all -m ping -i ./ansible_azure_rm.yml'
+                    sh 'cd ansible'
+                    sh 'ansible-playbook -i ./ansible_azure_rm.yml ./webserver.yml'
+                }
             }
         }
     }
