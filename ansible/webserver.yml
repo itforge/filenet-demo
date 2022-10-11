@@ -1,6 +1,6 @@
 ---
 - name: webserver
-  hosts: frontendserver
+  hosts: _frontendserver
   become: yes
   become_method: sudo
   gather_facts: true
