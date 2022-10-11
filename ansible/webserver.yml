@@ -16,6 +16,7 @@
   
   roles:
     - role: webserver
+    - role: certbot
     - role: website
 
   post_tasks:

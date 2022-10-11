@@ -1,0 +1,29 @@
+---
+# tasks file for certbot
+
+- name: install certbot
+  pip:
+    name:
+      - certbot
+      - certbot-nginx
+    executable: pip3
+
+- name: register certbot
+  shell: |
+    certbot -n register --agree-tos --email leander@vforge.net
+    touch /etc/letsencrypt/.registered
+  args:
+    creates: /etc/letsencrypt/.registered
+
+- name: setup cronjob for renewal
+  cron:
+    name: certbot-renewal
+    job: "/bin/bash -lc '/usr/local/bin/certbot -q renew'"
+    minute: "0"
+    hour: "14"
+
+- name: 'get certificate'
+  command: '/usr/local/bin/certbot -n --nginx certonly -d {{ inventory_hostname_short }}.sscict.vforge.net'
+  args:
+    creates: '/etc/letsencrypt/live/{{ inventory_hostname_short }}.sscict.vforge.net'
+  ignore_errors: true
