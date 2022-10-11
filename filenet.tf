@@ -44,3 +44,7 @@ module "server" {
     module.compartiment
   ]
 }
+
+output hostnames {
+  value = module.server[each.value.server].hostname
+}

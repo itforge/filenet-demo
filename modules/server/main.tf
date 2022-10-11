@@ -76,6 +76,10 @@ resource "azurerm_linux_virtual_machine" "server" {
 
 }
 
+output "hostname" {
+  value = [azurerm_dns_a_record.dns[count.index].fqdn]
+}
+
 # resource "ansible_host" "server" {
 #   count              = var.aantal
 #   inventory_hostname = azurerm_linux_virtual_machine.server[count.index].public_ip_address
