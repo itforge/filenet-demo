@@ -46,5 +46,5 @@ module "server" {
 }
 
 output hostnames {
-  value = module.server[each.value.server].hostname
+  value = [for x in module.server : x.hostname]
 }
