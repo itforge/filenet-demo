@@ -44,7 +44,3 @@ module "server" {
     module.compartiment
   ]
 }
-
-output sshkey {
-  value = module.server.*.ssh
-}

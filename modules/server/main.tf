@@ -12,11 +12,6 @@ variable "admin_user" {
     default = "adminuser"
 }
 
-resource "tls_private_key" "ssh" {
-  algorithm = "RSA"
-  rsa_bits  = "4096"
-}
-
 resource "azurerm_network_interface" "nic" {
   count               = var.aantal
   name                = "${var.name}-${count.index}"
@@ -46,7 +41,7 @@ resource "azurerm_linux_virtual_machine" "server" {
 
   admin_ssh_key {
     username   = var.admin_user
-    public_key = tls_private_key.ssh.public_key_openssh
+    public_key = file("${path.module}/jenkins.pub")
   }
 
   os_disk {
@@ -61,10 +56,6 @@ resource "azurerm_linux_virtual_machine" "server" {
     version   = "latest"
   }
 
-}
-
-output ssh {
-  value = tls_private_key.ssh.private_key_openssh
 }
 
 # resource "ansible_host" "server" {
