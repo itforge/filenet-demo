@@ -56,6 +56,7 @@ pipeline {
         stage('Application Deployment') {
             steps {
                 echo 'Deploying....'
+                sh 'ansible all -m ping -i ./ansible_azure_rm.yml'
             }
         }
     }
