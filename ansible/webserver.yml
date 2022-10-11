@@ -4,9 +4,11 @@
   become: yes
   become_method: sudo
   gather_facts: true
+  
   vars:
     picture_width: 500
     picture_height: 500
+  
   pre_tasks:
     - name:  Wait for system to become reachable...
       wait_for_connection:
