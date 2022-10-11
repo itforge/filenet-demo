@@ -35,9 +35,8 @@ pipeline {
             steps {
                 script {
                     echo "PATH = ${PATH}"
-                def tfHome = tool name: 'Ansible'
-                env.PATH = "${tfHome}:${env.PATH}"
-                 sh 'ansible --version'
+                    env.PATH = "/var/lib/jenkins/.local/bin:${env.PATH}"
+                    sh 'ansible --version'
                 }
             }
         }    
