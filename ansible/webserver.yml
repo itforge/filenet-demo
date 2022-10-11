@@ -4,11 +4,22 @@
   become: yes
   become_method: sudo
   gather_facts: true
+  domain_name: "sscict.vforge.net"
   
   vars:
     picture_width: 500
     picture_height: 500
-  
+    acme_terms_agreed: yes
+    letsencrypt_dir: /etc/letsencrypt
+    letsencrypt_keys_dir: /etc/letsencrypt/keys
+    letsencrypt_csrs_dir: /etc/letsencrypt/csrs
+    letsencrypt_certs_dir: /etc/letsencrypt/certs
+    letsencrypt_account_key: /etc/letsencrypt/account/account.key
+    acme_challenge_type: http-01
+    acme_directory: https://acme-v02.api.letsencrypt.org/directory
+    acme_version: 2
+    acme_email: leander@vforge.net
+
   pre_tasks:
     - name:  Wait for system to become reachable...
       wait_for_connection:
@@ -16,7 +27,7 @@
   
   roles:
     - role: webserver
-    - role: certbot
+    - role: letsencrypt
     - role: website
 
   post_tasks:
