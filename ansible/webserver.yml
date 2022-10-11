@@ -21,3 +21,4 @@
   post_tasks:
     - name: Flag system as provisioned by ansible
       shell: echo "$(date --iso-8601=seconds)" > /etc/last_ansible_run
+      changed_when: False
