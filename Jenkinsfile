@@ -57,24 +57,19 @@ pipeline {
     }
     post {
         always {
-            echo "Archiveren artifacts"
-            //archiveArtifacts artifacts: '**/*', fingerprint: true
-            //junit 'build/reports/**/*.xml'
-        }
-        success {
-            echo "Build was successvol."
-            //mail to: 'architect@infraautomator.example.com',
-            //subject: "Build ${env.BUILD_tag}, commit: ${gitCommit} was successful.",
-            //body: "Build is on branch ${env.JOB_NAME}"
-        }
-        unsuccessful {
-            echo "Build mislukt."
-            //mail to: 'architect@infraautomator.example.com',
-            //subject: "Build ${env.BUILD_tag}, commit: ${gitCommit} was successful.",
-            //body: "Build is on branch ${env.JOB_NAME}"
-        }
-        changed {
-            echo "${env.JOB_NAME} deed de vorige keer wat anders..."
+            script {
+                step(
+                [
+                    $class              : 'RobotPublisher',
+                    outputPath          : 'my_robot_results',
+                    outputFileName      : 'output.xml',
+                    reportFileName      : 'report.html',
+                    logFileName         : 'log.html',
+                    disableArchiveOutput: true,
+                    otherFiles          : "*.png,*.jpg",
+                ]
+                )
+            }
         }
     }
 }
