@@ -6,8 +6,8 @@
   gather_facts: true
   
   vars:
-    picture_width: 500
-    picture_height: 500
+    picture_width: 1024
+    picture_height: 768
 
   pre_tasks:
     - name:  Wait for system to become reachable...
