@@ -7,7 +7,7 @@
   
   vars:
     picture_width: 1024
-    picture_height: 1024
+    picture_height: 768
 
   pre_tasks:
     - name:  Wait for system to become reachable...
