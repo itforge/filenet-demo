@@ -49,7 +49,7 @@ pipeline {
         stage('Application Smoke test') {
             steps {
                 script {
-                    sh "robot robot/smoketest.robot"
+                    sh "robot --outputdir my_robot_results robot/smoketest.robot"
                     currentBuild.result = 'SUCCESS'
                 }
             }
