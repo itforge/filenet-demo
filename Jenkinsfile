@@ -55,4 +55,27 @@ pipeline {
             }
         }
     }
+    post {
+        always {
+            echo "Archiveren artifacts"
+            //archiveArtifacts artifacts: '**/*', fingerprint: true
+            //junit 'build/reports/**/*.xml'
+        }
+        success {
+            echo "Build ${env.BUILD_tag}, commit: ${gitCommit} was successvol."
+            //mail to: 'architect@infraautomator.example.com',
+            //subject: "Build ${env.BUILD_tag}, commit: ${gitCommit} was successful.",
+            //body: "Build is on branch ${env.JOB_NAME}"
+        }
+        unsuccessful {
+            echo "Build ${env.BUILD_tag}, commit: ${gitCommit} mislukt."
+            //mail to: 'architect@infraautomator.example.com',
+            //subject: "Build ${env.BUILD_tag}, commit: ${gitCommit} was successful.",
+            //body: "Build is on branch ${env.JOB_NAME}"
+        }
+        changed {
+            echo "${env.JOB_NAME} deed de vorige keer wat anders..."
+        }
+    }
+}
 }
