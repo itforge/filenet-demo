@@ -46,5 +46,13 @@ pipeline {
                 }
             }
         }
+        stage('Application Smoke test') {
+            steps {
+                script {
+                    sh "robot robot/smoketest.robot"
+                    currentBuild.result = 'SUCCESS'
+                }
+            }
+        }
     }
 }
