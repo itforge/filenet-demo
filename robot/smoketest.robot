@@ -4,7 +4,7 @@ Library           SeleniumLibrary
 Library           OperatingSystem
 Documentation     Smoketesting someApp.
 *** Variables ***
-${BROWSER1}         Chrome
+${BROWSER1}         headlessfirefox
 ${DELAY}            0
 ${WEBSITE URL}      http://frontendserver-0.sscict.vforge.net/
 
