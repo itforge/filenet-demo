@@ -47,6 +47,7 @@ pipeline {
             }
         }
         stage('Application Smoke test') {
+            when { expression { false } }
             steps {
                 script {
                     sh "robot --outputdir my_robot_results robot/smoketest.robot"
