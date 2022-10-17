@@ -81,7 +81,7 @@ variable "address_prefixes" {
 }
 
 output "subnet_id" {
-  value = azurerm_subnet.subnet[count.index].id
+  value = azurerm_subnet.subnet.*.id
 }
 
 # output "name" {
