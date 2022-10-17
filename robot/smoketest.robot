@@ -25,4 +25,4 @@ Home page should be Open
     Sleep                       1
     Location Should Contain     ${WEBSITE URL}
     Page Should Contain         Gallery
-    Title Should Be             Woof!
+    Title Should Be             Meow!
