@@ -26,7 +26,7 @@ pipeline {
         stage('Terraform Plan') {
             steps {
                 echo 'Terraform Plan..'
-                sh 'terraform plan -no-color -out myplan'
+                sh "terraform plan -no-color -out myplan"
             }
         }
         stage('Terraform Apply') {

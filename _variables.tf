@@ -8,6 +8,11 @@ variable "region" {
   type        = string
 }
 
+variable "provider" {
+  description = "Infra Provider, odc, azure of aws"
+  type        = string
+}
+
 variable "omgeving" {
   description = "Omgeving naam"
   type        = string
