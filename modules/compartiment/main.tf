@@ -65,7 +65,7 @@ variable "location" {
 }
 
 variable "cloudprovider" {
-  type    = string
+  type = string
 }
 
 variable "resource_group_name" {
@@ -81,7 +81,7 @@ variable "address_prefixes" {
 }
 
 output "subnet_id" {
-  value = azurerm_subnet.subnet.*.id
+  value = azurerm_subnet.subnet.0.id
 }
 
 # output "name" {
