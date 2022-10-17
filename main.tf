@@ -23,6 +23,7 @@ module "compartiment" {
   virtual_network_name = module.omgeving.vnet_name
   resource_group_name  = module.omgeving.rg_name
   location             = var.region
+  cloudprovider        = var.cloudprovider
   address_prefixes     = each.value.address_prefixes
   depends_on = [
     module.omgeving
@@ -36,6 +37,7 @@ module "server" {
   aantal               = each.value.aantal
   resource_group_name  = module.omgeving.rg_name
   location             = var.region
+  cloudprovider        = var.cloudprovider
   subnet               = module.compartiment[each.value.compartiment].subnet_id
   size                 = each.value.size
   publisher            = each.value.publisher

@@ -1,5 +1,6 @@
 variable "name" {}
 variable "location" {}
+variable "cloudprovider" {}
 variable "resource_group_name" {}
 variable "subnet" {}
 variable "size" {}
@@ -13,7 +14,7 @@ variable "admin_user" {
 }
 
 resource "azurerm_dns_a_record" "dns" {
-  count               = var.aantal
+  count               = var.cloudprovider == "azure" ? var.aantal : 0
   name                = "${var.name}-${count.index}"
   zone_name           = "sscict.vforge.net"
   resource_group_name = var.resource_group_name
@@ -22,7 +23,7 @@ resource "azurerm_dns_a_record" "dns" {
 }
 
 resource "azurerm_public_ip" "public_ip" {
-  count               = var.aantal
+  count               = var.cloudprovider == "azure" ? var.aantal : 0
   name                = "${var.name}-${count.index}"
   resource_group_name = var.resource_group_name
   location            = var.location
@@ -30,7 +31,7 @@ resource "azurerm_public_ip" "public_ip" {
 }
 
 resource "azurerm_network_interface" "nic" {
-  count               = var.aantal
+  count               = var.cloudprovider == "azure" ? var.aantal : 0
   name                = "${var.name}-${count.index}"
   location            = var.location
   resource_group_name = var.resource_group_name
@@ -44,7 +45,7 @@ resource "azurerm_network_interface" "nic" {
 }
 
 resource "azurerm_linux_virtual_machine" "server" {
-  count               = var.aantal
+  count               = var.cloudprovider == "azure" ? var.aantal : 0
   name                = "${var.name}-${count.index}"
   resource_group_name = var.resource_group_name
   location            = var.location
