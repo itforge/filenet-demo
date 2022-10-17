@@ -9,6 +9,7 @@ module "omgeving" {
   name                = "vnet-${var.tenant}-${var.omgeving}"
   resource_group_name = var.tenant
   location            = var.region
+  cloudprovider       = var.cloudprovider
   address_space       = var.vnet_address_space
   depends_on = [
     module.tenant

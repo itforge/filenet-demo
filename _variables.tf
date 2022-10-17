@@ -8,8 +8,8 @@ variable "region" {
   type        = string
 }
 
-variable "provider" {
-  description = "Infra Provider, odc, azure of aws"
+variable "cloudprovider" {
+  description = "Cloud Provider, odc, azure of aws"
   type        = string
 }
 
