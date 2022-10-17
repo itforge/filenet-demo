@@ -1,5 +1,5 @@
 resource "azurerm_virtual_network" "vnet" {
-  count               = var.cloudprovider == "azure" ? true : false
+  count               = var.cloudprovider == "azure" ? 1 : 0
   name                = var.name
   resource_group_name = var.resource_group_name  
   location            = var.location
