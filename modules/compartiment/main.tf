@@ -51,8 +51,8 @@ resource "azurerm_network_security_group" "nsg" {
 
 resource "azurerm_subnet_network_security_group_association" "nsg" {
   count                     = var.cloudprovider == "azure" ? 1 : 0
-  subnet_id                 = azurerm_subnet.subnet.id
-  network_security_group_id = azurerm_network_security_group.nsg.id
+  subnet_id                 = azurerm_subnet.subnet[count.index].id
+  network_security_group_id = azurerm_network_security_group.nsg[count.index].id
 }
 
 #Azure Subnet module variable.tf file
