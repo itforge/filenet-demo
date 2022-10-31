@@ -1,0 +1,243 @@
+{
+    "name": "App_something_ACC_1",
+    "tenant": "something",
+    "environment": "1",
+    "compartments": {
+        "PA001": {
+            "type": "PA",
+            "parentid": "APP001",
+            "name": "PA",
+            "numofservers": 3,
+            "details": {},
+            "design": {
+                "Number_of_Servers": 3,
+                "Type": "PA"
+            }
+        },
+        "SHD001": {
+            "type": "D",
+            "parentid": "SHAPP001",
+            "name": "D",
+            "numofservers": 1,
+            "details": {},
+            "design": {
+                "Number_of_Servers": 1,
+                "Type": "D"
+            }
+        },
+        "SHD002": {
+            "type": "D",
+            "parentid": "SHAPP001",
+            "name": "D",
+            "numofservers": 2,
+            "details": {},
+            "design": {
+                "Number_of_Servers": 2,
+                "Type": "D"
+            }
+        }
+    },
+    "servers": {
+        "PA001SRV001": {
+            "compartment": "PA001",
+            "name": "PA001SRV001",
+            "size": "Licht",
+            "serverrol": "Web server",
+            "details": {},
+            "design": {
+                "size": "Licht",
+                "OS": "Red Hat Enterprise Linux 7 (64-bit)",
+                "serverrol": "Web server"
+            }
+        },
+        "PA001SRV002": {
+            "compartment": "PA001",
+            "name": "PA001SRV002",
+            "size": "Licht",
+            "serverrol": "Web server",
+            "details": {},
+            "design": {
+                "size": "Licht",
+                "OS": "Microsoft Windows Server 2012 (64-bit)",
+                "serverrol": "Web server"
+            }
+        },
+        "PA001SRV003": {
+            "compartment": "PA001",
+            "name": "PA001SRV003",
+            "size": "Licht",
+            "serverrol": "Web server",
+            "details": {},
+            "design": {
+                "size": "Licht",
+                "OS": "Microsoft Windows Server 2012 (64-bit)",
+                "serverrol": "Web server"
+            }
+        },
+        "SHD001SRV001": {
+            "compartment": "SHD001",
+            "name": "SHD001SRV001",
+            "size": "Onbekend",
+            "serverrol": "Onbekend",
+            "details": {},
+            "design": {
+                "size": "Onbekend",
+                "OS": NaN,
+                "serverrol": "Onbekend"
+            }
+        },
+        "SHD002SRV001": {
+            "compartment": "SHD002",
+            "name": "SHD002SRV001",
+            "size": "Onbekend",
+            "serverrol": "Onbekend",
+            "details": {},
+            "design": {
+                "size": "Onbekend",
+                "OS": NaN,
+                "serverrol": "Onbekend"
+            }
+        },
+        "SHD002SRV002": {
+            "compartment": "SHD002",
+            "name": "SHD002SRV002",
+            "size": "Onbekend",
+            "serverrol": "Onbekend",
+            "details": {},
+            "design": {
+                "size": "Onbekend",
+                "OS": NaN,
+                "serverrol": "Onbekend"
+            }
+        }
+    },
+    "conduits": {
+        "TRAPP001": {
+            "type": "TRAPP",
+            "vip_name": [],
+            "name": "ADDS-domain_tenant-provider_PRD_1",
+            "parentid": "TENREL001",
+            "related_tenant": "tenant-provider",
+            "details": {},
+            "orgdata": {
+                "source.ip": ["1.2.208.54"],
+                "destination.ip": ["1.2.117.127"],
+                "flow.service_name": [["epmap (TCP/135)"]],
+                "destination.compartment": ["754a366cf9bcacf8cc0575d321da1474f9097d105541415945d6f6a586939052"],
+                "App_Relation_hash_id": ["f5ee4afd05795ba01c1598d33d12e581ed3f2216326c6c393693c7134c2d7e75"],
+                "Rel_App_Relation_hash_id": ["d95f74fa0f3eb1facdf859f5fab1e1ab353163d665bf70eef9194ae2facd19cb"],
+                "source.compartment": ["54983e793145644a3754fdac57fa68e507ea9f820f0e59aa86b81773d89dc678"],
+                "Related_Compartment_Subnet": ["1.2.208.48/28"],
+                "Related_Compartment_Description": ["VLAN2112 - T1-prov-MGT-NUT-ad-dns"],
+                "Related_Compartment_Type": ["PAD"]
+            },
+            "related_addresses": ["PA001"]
+        },
+        "TRAPP002": {
+            "type": "TRAPP",
+            "vip_name": [],
+            "name": "FlexNet-Manager-Suite_tenant-provider_PRD_1",
+            "parentid": "TENREL001",
+            "related_tenant": "tenant-provider",
+            "details": {},
+            "orgdata": {
+                "source.ip": ["1.2.208.122"],
+                "destination.ip": ["1.2.117.133", "1.2.117.127"],
+                "flow.service_name": [["icmp/0", "https (TCP/443)"], ["https (TCP/443)"]],
+                "destination.compartment": ["754a366cf9bcacf8cc0575d321da1474f9097d105541415945d6f6a586939052"],
+                "App_Relation_hash_id": ["f5ee4afd05795ba01c1598d33d12e581ed3f2216326c6c393693c7134c2d7e75"],
+                "Rel_App_Relation_hash_id": ["b6aaf5e20f54f4d094c5ff9c255a9b92cbeb3d186609ecc787754f99dd297fcc"],
+                "source.compartment": ["52874518227463cafe9511523e45aa508d31af79c6010a425b32b531eedc08d1"],
+                "Related_Compartment_Subnet": ["1.2.208.96/27"],
+                "Related_Compartment_Description": ["VLAN2115 - T1-prov-MGT-NUT-gedeeld"],
+                "Related_Compartment_Type": ["PAD"]
+            },
+            "related_addresses": ["PA001"]
+        },
+        "TRAPP003": {
+            "type": "TRAPP",
+            "vip_name": [],
+            "name": "CITRIX-MFA_tenant-provider_PRD_2",
+            "parentid": "TENREL001",
+            "related_tenant": "tenant-provider",
+            "details": {},
+            "related_addresses": ["PA001"]
+        },
+        "TRAPP004": {
+            "type": "TRAPP",
+            "vip_name": [],
+            "name": "Onbekend",
+            "parentid": "TENREL001",
+            "related_tenant": "",
+            "details": {}
+        },
+        "TRAPP005": {
+            "type": "TRAPP",
+            "vip_name": [],
+            "name": "MSSQL-Platform_tenant-provider_PRD_1",
+            "parentid": "TENREL001",
+            "related_tenant": "tenant-provider",
+            "details": {},
+            "orgdata": {
+                "source.ip": ["1.2.210.33"],
+                "destination.ip": ["10.17.135.243"],
+                "flow.service_name": [["avt-profile-2 (TCP/5005)", "epmap (TCP/135)", "wsman (TCP/5985)"]],
+                "destination.compartment": ["ee9eab00b4ff3d3cd51279cb87f8c3962f0648201182a5a0ec06c8110b20b01b"],
+                "App_Relation_hash_id": ["f5ee4afd05795ba01c1598d33d12e581ed3f2216326c6c393693c7134c2d7e75"],
+                "Rel_App_Relation_hash_id": ["db8491fed39a61f1d10af44f1a7ddce16dcc24180b7b95575187666a8a05c939"],
+                "source.compartment": ["c350b0b0286bdc8fbffd449ca64354ee1fc04e22af07c6fb45a1d760f576eff5"],
+                "Related_Compartment_Subnet": ["1.2.210.0/24"],
+                "Related_Compartment_Description": ["VLAN2124 - T1-prov-MGT-BI"],
+                "Related_Compartment_Type": ["PAD"]
+            },
+            "related_addresses": ["SHD002"]
+        },
+        "TRAPP006": {
+            "type": "TRAPP",
+            "vip_name": [],
+            "name": "OBM_tenant-provider_PRD_1",
+            "parentid": "TENREL001",
+            "related_tenant": "tenant-provider",
+            "details": {},
+            "orgdata": {
+                "source.ip": ["1.2.211.62"],
+                "destination.ip": ["1.2.117.132"],
+                "flow.service_name": [["hp-alarm-mgr (TCP/383)"]],
+                "destination.compartment": ["754a366cf9bcacf8cc0575d321da1474f9097d105541415945d6f6a586939052"],
+                "App_Relation_hash_id": ["f5ee4afd05795ba01c1598d33d12e581ed3f2216326c6c393693c7134c2d7e75"],
+                "Rel_App_Relation_hash_id": ["74f11addf6f48f903db4fef0dfecb83d37c21f494f2b71f1555b951245b760bb"],
+                "source.compartment": ["d10701095a456023feed2d3ce0db6066b59699768f9e22ece9e4ef5c68f3bba6"],
+                "Related_Compartment_Subnet": ["1.2.211.0/25"],
+                "Related_Compartment_Description": ["VLAN2125 - T1-prov-MGT-BC"],
+                "Related_Compartment_Type": ["PAD"]
+            },
+            "related_addresses": ["PA001"]
+        },
+        "TRAPP007": {
+            "type": "TRAPP",
+            "vip_name": [],
+            "name": "Trellix_tenant-provider_PRD_1",
+            "parentid": "TENREL001",
+            "related_tenant": "tenant-provider",
+            "details": {},
+            "orgdata": {
+                "source.ip": ["1.2.211.53", "1.2.211.72"],
+                "destination.ip": ["1.2.117.133", "1.2.117.127"],
+                "flow.service_name": [["dynamid (TCP/9002)", "https (TCP/443)"], ["https (TCP/443)", "kafka-manager (TCP/9000)"], ["secure-mqtt (TCP/8883)"]],
+                "destination.compartment": ["754a366cf9bcacf8cc0575d321da1474f9097d105541415945d6f6a586939052"],
+                "App_Relation_hash_id": ["f5ee4afd05795ba01c1598d33d12e581ed3f2216326c6c393693c7134c2d7e75"],
+                "Rel_App_Relation_hash_id": ["bb17e8ab731ce61f3abfd059f84959d753334d9ea437761a959cead909336e3d"],
+                "source.compartment": ["99ceb31a410a505712ded8ef8156826b0cc10eb50637cc00835003eafe189a03"],
+                "Related_Compartment_Subnet": ["1.2.211.0/25"],
+                "Related_Compartment_Description": ["VLAN2125 - T1-prov-MGT-BC"],
+                "Related_Compartment_Type": ["PAD"]
+            },
+            "related_addresses": ["PA001"]
+        }
+    },
+    "databases": {},
+    "flows": [],
+    "cloudprovider": "provider",
+    "region": "region",
+    "availability_zone": "App-PoD"
+}
