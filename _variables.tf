@@ -29,13 +29,13 @@ variable "compartimenten" {
 variable "servers" {
   description = "Map met servers"
   type = map(object({
-    aantal = string
-    name = string
-    size = string
+    aantal       = string
+    name         = string
+    size         = string
     compartiment = string
-    publisher = string
-    offer = string
-    sku = string
+    publisher    = string
+    offer        = string
+    sku          = string
   }))
 }
 

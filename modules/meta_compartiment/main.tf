@@ -27,11 +27,10 @@ output "rg_name" {
 }
 
 output "subnet_id" {
-  value = var.cloudprovider == "azure" ? module.azure_compartiment.0.subnet_id : null
-}
-
-output "subnet_id2" {
-  value = var.cloudprovider == "odc" ? module.odc_compartiment.0.subnet_id : null
+  value = {
+    "azure" = var.cloudprovider == "azure" ? module.azure_compartiment.0.subnet_id : null
+    "odc" = var.cloudprovider == "odc" ? module.odc_compartiment.0.subnet_id : null
+  }
 }
 
 variable "name" {

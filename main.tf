@@ -12,6 +12,7 @@ module "omgeving" {
   location            = var.region
   cloudprovider       = var.cloudprovider
   address_space       = var.vnet_address_space
+
   depends_on = [
     module.tenant
   ]
@@ -26,30 +27,31 @@ module "compartiment" {
   location             = var.region
   cloudprovider        = var.cloudprovider
   address_prefixes     = each.value.address_prefixes
+
   depends_on = [
     module.omgeving
   ]
 }
 
 module "servers" {
-  source               = "./modules/meta_server"
-  for_each             = var.servers
-  name                 = each.value.name
-  aantal               = each.value.aantal
-  resource_group_name  = module.omgeving.rg_name
-  location             = var.region
-  cloudprovider        = var.cloudprovider
-  subnet               = module.compartiment[each.value.compartiment].subnet_id
-  size                 = each.value.size
-  publisher            = each.value.publisher
-  offer                = each.value.offer
-  sku                  = each.value.sku
+  source              = "./modules/meta_server"
+  for_each            = var.servers
+  name                = each.value.name
+  aantal              = each.value.aantal
+  resource_group_name = module.omgeving.rg_name
+  location            = var.region
+  cloudprovider       = var.cloudprovider
+  subnet              = module.compartiment[each.value.compartiment].subnet_id[var.cloudprovider]
+  size                = each.value.size
+  publisher           = each.value.publisher
+  offer               = each.value.offer
+  sku                 = each.value.sku
 
   depends_on = [
     module.compartiment
   ]
 }
 
-output hostnames {
+output "hostnames" {
   value = [for x in module.servers : x.hostname]
 }
