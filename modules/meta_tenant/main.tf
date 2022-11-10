@@ -8,3 +8,10 @@ module "azure_tenant" {
   name     = var.name
   location = var.location
 }
+
+module "odc_tenant" {
+  source   = "../odc_tenant"
+  count    = var.cloudprovider == "odc" ? 1 : 0
+  name     = var.name
+  location = var.location
+}
