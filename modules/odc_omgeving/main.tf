@@ -1,9 +1,13 @@
-resource "azurerm_virtual_network" "vnet" {
-  count               = var.cloudprovider == "azure" ? 1 : 0
-  name                = var.name
-  resource_group_name = var.resource_group_name  
-  location            = var.location
-  address_space       = var.address_space
+resource "null_resource" "omgeving" {
+  triggers = {
+    value = var.name
+  }
+
+  provisioner "local-exec" {
+    command = <<EOT
+      echo "Create omgeving ${var.name}"
+    EOT
+  }
 }
 
 output "vnet_name" {
@@ -15,10 +19,6 @@ output "rg_name" {
 }
 
 variable "name" {
-  type    = string
-}
-
-variable "cloudprovider" {
   type    = string
 }
 

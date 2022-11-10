@@ -1,5 +1,4 @@
 resource "azurerm_subnet" "subnet" {
-  count                = var.cloudprovider == "azure" ? 1 : 0
   name                 = var.name
   resource_group_name  = var.resource_group_name
   virtual_network_name = var.virtual_network_name
@@ -7,7 +6,6 @@ resource "azurerm_subnet" "subnet" {
 }
 
 resource "azurerm_network_security_group" "nsg" {
-  count               = var.cloudprovider == "azure" ? 1 : 0
   name                = "${var.name}-nsg"
   location            = var.location
   resource_group_name = var.resource_group_name
@@ -50,50 +48,18 @@ resource "azurerm_network_security_group" "nsg" {
 }
 
 resource "azurerm_subnet_network_security_group_association" "nsg" {
-  count                     = var.cloudprovider == "azure" ? 1 : 0
-  subnet_id                 = azurerm_subnet.subnet[count.index].id
-  network_security_group_id = azurerm_network_security_group.nsg[count.index].id
+  subnet_id                 = azurerm_subnet.subnet.id
+  network_security_group_id = azurerm_network_security_group.nsg.id
 }
 
-#Azure Subnet module variable.tf file
-variable "name" {
-  type = string
-}
-
-variable "location" {
-  type = string
-}
-
-variable "cloudprovider" {
-  type = string
-}
-
-variable "resource_group_name" {
-  type = string
-}
-
-variable "virtual_network_name" {
-  type = string
-}
-
+variable "name" {}
+variable "location" {}
+variable "resource_group_name" {}
+variable "virtual_network_name" {}
 variable "address_prefixes" {
-  type = list
+    type = list
 }
 
 output "subnet_id" {
-  value = azurerm_subnet.subnet.0.id
+  value = azurerm_subnet.subnet.id
 }
-
-# output "name" {
-#   value = {
-#     for subnet in azurerm_subnet.subnet :
-#     subnet.name => subnet.name
-#   }
-# }
-
-# output "id" {
-#   value = {
-#     for subnet in azurerm_subnet.subnet :
-#     subnet.name => subnet.id
-#   }
-# }

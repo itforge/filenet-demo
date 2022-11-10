@@ -1,6 +1,6 @@
 variable "name" {}
+variable "domain" {}
 variable "location" {}
-variable "cloudprovider" {}
 variable "resource_group_name" {}
 variable "subnet" {}
 variable "size" {}
@@ -14,16 +14,16 @@ variable "admin_user" {
 }
 
 resource "azurerm_dns_a_record" "dns" {
-  count               = var.cloudprovider == "azure" ? var.aantal : 0
+  count               = var.aantal
   name                = "${var.name}-${count.index}"
-  zone_name           = "sscict.vforge.net"
+  zone_name           = var.domain
   resource_group_name = var.resource_group_name
   ttl                 = 300
   target_resource_id  = azurerm_public_ip.public_ip[count.index].id
 }
 
 resource "azurerm_public_ip" "public_ip" {
-  count               = var.cloudprovider == "azure" ? var.aantal : 0
+  count               = var.aantal
   name                = "${var.name}-${count.index}"
   resource_group_name = var.resource_group_name
   location            = var.location
@@ -31,7 +31,7 @@ resource "azurerm_public_ip" "public_ip" {
 }
 
 resource "azurerm_network_interface" "nic" {
-  count               = var.cloudprovider == "azure" ? var.aantal : 0
+  count               = var.aantal
   name                = "${var.name}-${count.index}"
   location            = var.location
   resource_group_name = var.resource_group_name
@@ -45,7 +45,7 @@ resource "azurerm_network_interface" "nic" {
 }
 
 resource "azurerm_linux_virtual_machine" "server" {
-  count               = var.cloudprovider == "azure" ? var.aantal : 0
+  count               = var.aantal
   name                = "${var.name}-${count.index}"
   resource_group_name = var.resource_group_name
   location            = var.location
@@ -65,14 +65,14 @@ resource "azurerm_linux_virtual_machine" "server" {
 
   os_disk {
     caching              = "ReadWrite"
-    storage_account_type = "Standard_LRS"
+    storage_account_type = lookup(lookup(var.Azure_serverOS, var.os),"os_disk")
   }
 
   source_image_reference {
-    publisher = var.publisher
-    offer     = var.offer
-    sku       = var.sku
-    version   = "latest"
+    publisher = lookup(lookup(var.Azure_serverOS, var.os),"publisher")
+    offer     = lookup(lookup(var.Azure_serverOS, var.os),"offer")
+    sku       = lookup(lookup(var.Azure_serverOS, var.os),"sku")
+    version   = lookup(lookup(var.Azure_serverOS, var.os),"version")
   }
 
 }

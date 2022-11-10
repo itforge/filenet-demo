@@ -1,7 +1,5 @@
 variable "name" {}
-variable "domain" {}
 variable "location" {}
-variable "cloudprovider" {}
 variable "resource_group_name" {}
 variable "subnet" {}
 variable "size" {}
@@ -17,7 +15,7 @@ variable "admin_user" {
 resource "azurerm_dns_a_record" "dns" {
   count               = var.aantal
   name                = "${var.name}-${count.index}"
-  zone_name           = var.domain
+  zone_name           = "sscict.vforge.net"
   resource_group_name = var.resource_group_name
   ttl                 = 300
   target_resource_id  = azurerm_public_ip.public_ip[count.index].id
@@ -66,14 +64,14 @@ resource "azurerm_linux_virtual_machine" "server" {
 
   os_disk {
     caching              = "ReadWrite"
-    storage_account_type = lookup(lookup(var.Azure_serverOS, var.os),"os_disk")
+    storage_account_type = "Standard_LRS"
   }
 
   source_image_reference {
-    publisher = lookup(lookup(var.Azure_serverOS, var.os),"publisher")
-    offer     = lookup(lookup(var.Azure_serverOS, var.os),"offer")
-    sku       = lookup(lookup(var.Azure_serverOS, var.os),"sku")
-    version   = lookup(lookup(var.Azure_serverOS, var.os),"version")
+    publisher = var.publisher
+    offer     = var.offer
+    sku       = var.sku
+    version   = "latest"
   }
 
 }

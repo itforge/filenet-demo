@@ -1,12 +1,13 @@
 module "tenant" {
-  source   = "./modules/tenant"
-  name     = var.tenant
-  location = var.region
+  source        = "./modules/meta_tenant"
+  cloudprovider = var.cloudprovider
+  name          = var.tenant
+  location      = var.region
 }
 
 module "omgeving" {
-  source              = "./modules/omgeving"
-  name                = "vnet-${var.tenant}-${var.omgeving}"
+  source              = "./modules/meta_omgeving"
+  name                = "${var.tenant}-${var.omgeving}"
   resource_group_name = var.tenant
   location            = var.region
   cloudprovider       = var.cloudprovider
@@ -17,7 +18,7 @@ module "omgeving" {
 }
 
 module "compartiment" {
-  source               = "./modules/compartiment"
+  source               = "./modules/meta_compartiment"
   for_each             = var.compartimenten
   name                 = each.value.name
   virtual_network_name = module.omgeving.vnet_name
@@ -30,8 +31,8 @@ module "compartiment" {
   ]
 }
 
-module "server" {
-  source               = "./modules/server"
+module "servers" {
+  source               = "./modules/meta_server"
   for_each             = var.servers
   name                 = each.value.name
   aantal               = each.value.aantal
@@ -43,12 +44,12 @@ module "server" {
   publisher            = each.value.publisher
   offer                = each.value.offer
   sku                  = each.value.sku
-  
+
   depends_on = [
     module.compartiment
   ]
 }
 
 output hostnames {
-  value = [for x in module.server : x.hostname]
+  value = [for x in module.servers : x.hostname]
 }
